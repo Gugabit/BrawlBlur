@@ -53,6 +53,11 @@ func main() {
 			backgroundsBackupFolderExists = true
 		}
 
+		if !backgroundsBackupFolderExists {
+			os.Mkdir(backgroundsBackupPath, os.FileMode(0777))
+			backgroundsBackupFolderExists = true
+		}
+
 		if backgroundsBackupFolderExists {
 			bgBackupFiles, _ = readDir(backgroundsBackupPath)
 			if len(bgBackupFiles) != 0 {
@@ -60,10 +65,6 @@ func main() {
 			} else {
 				backgroundsBackupFolderIsEmpty = true
 			}
-		}
-
-		if !backgroundsBackupFolderExists {
-			os.Mkdir(backgroundsBackupPath, os.FileMode(0777))
 		}
 
 		if backgroundsBackupFolderIsEmpty && !backgroundsFolderIsEmpty {
@@ -115,7 +116,7 @@ func main() {
 		if continueDialog {
 			bgFiles, _ = readDir(backgroundsPath)
 
-			if backgroundsBackupFolderExists && !backgroundsBackupFolderIsEmpty {
+			if backgroundsBackupFolderExists && !backgroundsBackupFolderIsEmpty && continueDialog {
 				for _, file := range bgFiles {
 					if !file.IsDir() {
 						os.Remove(fmt.Sprintf("%s%c%s", backgroundsPath, os.PathSeparator, file.Name()))
@@ -146,7 +147,7 @@ func main() {
 	w.SetContent(container.NewVBox(
 		titleMessage,
 		widget.NewButton("Select Folder", func() {
-			brawlhallaPath, _ := dialog.Directory().Title("Now find a dir").Browse()
+			brawlhallaPath, _ := dialog.Directory().Title("Select Brawlhalla folder").Browse()
 
 			backgroundsFolderIsEmpty = false
 			backgroundsBackupFolderExists = false
