@@ -90,7 +90,7 @@ func main() {
 	blurButton.Disable()
 
 	undoBlurButton := widget.NewButton("Unblur Backgrounds", func() {
-		if _, err := os.Stat(backgroundsPath); os.IsNotExist(err) {
+		if _, err := os.Stat(backgroundsBackupPath); os.IsNotExist(err) {
 			backgroundsBackupFolderExists = false
 		}
 
