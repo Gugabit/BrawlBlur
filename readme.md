@@ -2,7 +2,7 @@
 
 ## Use instructions
 
-1. Download BrawlBlur.exe ![here]()
+1. Download BrawlBlur.exe release [here](https://github.com/Gugabit/BrawlBlur/releases/download/v0.1/BrawlBlur.exe)
 2. Open the program
 3. Click the button 'Select Folder' and select Brawlhalla folder (not wallpapers folder).
 4. Select the blur level in the slider.
