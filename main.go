@@ -43,9 +43,13 @@ func main() {
 		bgFiles, _ = readDir(backgroundsPath)
 		if len(Filter(bgFiles, func(file os.FileInfo) bool { return file.Name() != "Backup" })) == 0 {
 			backgroundsFolderIsEmpty = true
+		} else {
+			backgroundsFolderIsEmpty = false
 		}
 
-		if _, err := os.Stat(backgroundsBackupPath); !os.IsNotExist(err) {
+		if _, err := os.Stat(backgroundsBackupPath); os.IsNotExist(err) {
+			backgroundsBackupFolderExists = false
+		} else {
 			backgroundsBackupFolderExists = true
 		}
 
@@ -53,6 +57,8 @@ func main() {
 			bgBackupFiles, _ = readDir(backgroundsBackupPath)
 			if len(bgBackupFiles) != 0 {
 				backgroundsBackupFolderIsEmpty = false
+			} else {
+				backgroundsBackupFolderIsEmpty = true
 			}
 		}
 
@@ -78,7 +84,7 @@ func main() {
 
 		bgBackupFiles, _ = readDir(backgroundsBackupPath)
 		nFiles := len(bgBackupFiles)
-		dialog.Message("Blurring %i, this might take a while, please wait.", nFiles).Info()
+		dialog.Message("Blurring %d images, this might take a while, please wait.", nFiles).Info()
 
 		for index, file := range bgBackupFiles {
 			progress.Set(float64(index) / float64(nFiles))
@@ -92,6 +98,17 @@ func main() {
 	undoBlurButton := widget.NewButton("Unblur Backgrounds", func() {
 		if _, err := os.Stat(backgroundsBackupPath); os.IsNotExist(err) {
 			backgroundsBackupFolderExists = false
+		} else {
+			backgroundsBackupFolderExists = true
+		}
+
+		if backgroundsBackupFolderExists {
+			bgBackupFiles, _ = readDir(backgroundsBackupPath)
+			if len(bgBackupFiles) != 0 {
+				backgroundsBackupFolderIsEmpty = false
+			} else {
+				backgroundsBackupFolderIsEmpty = true
+			}
 		}
 
 		continueDialog := dialog.Message("Are you sure you want to undo the changes?").YesNo()
@@ -120,8 +137,8 @@ func main() {
 						os.Remove(fmt.Sprintf("%s%c%s", backgroundsPath, os.PathSeparator, file.Name()))
 					}
 				}
+				dialog.Message("Please verify game files on steam.").Info()
 			}
-			dialog.Message("No backup folder found. Please instead verify game files on steam.").Title("Failure").Error()
 		}
 	})
 	undoBlurButton.Disable()
@@ -149,9 +166,13 @@ func main() {
 			bgFiles, _ = readDir(backgroundsPath)
 			if len(Filter(bgFiles, func(file os.FileInfo) bool { return file.Name() != "Backup" })) == 0 {
 				backgroundsFolderIsEmpty = true
+			} else {
+				backgroundsFolderIsEmpty = false
 			}
 
-			if _, err := os.Stat(backgroundsBackupPath); !os.IsNotExist(err) {
+			if _, err := os.Stat(backgroundsBackupPath); os.IsNotExist(err) {
+				backgroundsBackupFolderExists = false
+			} else {
 				backgroundsBackupFolderExists = true
 			}
 
@@ -159,6 +180,8 @@ func main() {
 				bgBackupFiles, _ = readDir(backgroundsBackupPath)
 				if len(bgBackupFiles) != 0 {
 					backgroundsBackupFolderIsEmpty = false
+				} else {
+					backgroundsBackupFolderIsEmpty = true
 				}
 			}
 
