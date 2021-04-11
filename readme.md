@@ -1,5 +1,7 @@
 # BrawlBlur
 
+Utility for blurring Brawlhalla backgrounds.
+
 ## Use instructions
 
 1. Download BrawlBlur.exe release [here](https://github.com/Gugabit/BrawlBlur/releases/download/v0.1/BrawlBlur.exe)
